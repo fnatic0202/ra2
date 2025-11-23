@@ -173,55 +173,353 @@
 ^GainsExperience:
 	GainsExperience:
 		Conditions:
-			500: rank-veteran
-			1000: rank-elite
+			500: rank-level1
+			1000: rank-level2
+			1800: rank-level3
+			2800: rank-level4
+			4000: rank-level5
+			5500: rank-level6
+			7200: rank-level7
+			9200: rank-level8
+			11500: rank-level9
+			14000: rank-level10
 		LevelUpImage: crate-effects
 		LevelUpNotification: LevelUp
-	FirepowerMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
+	# Level 1 bonuses
+	FirepowerMultiplier@LEVEL1:
+		RequiresCondition: rank-level1 && !rank-level2
 		Modifier: 110
-	FirepowerMultiplier@ELITE:
-		RequiresCondition: rank-elite
-		Modifier: 130
-	DamageMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
-		Modifier: 90
-	DamageMultiplier@ELITE:
-		RequiresCondition: rank-elite
-		Modifier: 75
-	SpeedMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
+	DamageMultiplier@LEVEL1:
+		RequiresCondition: rank-level1 && !rank-level2
+		Modifier: 92
+	SpeedMultiplier@LEVEL1:
+		RequiresCondition: rank-level1 && !rank-level2
+		Modifier: 110
+	ReloadDelayMultiplier@LEVEL1:
+		RequiresCondition: rank-level1 && !rank-level2
+		Modifier: 92
+	# Level 2 bonuses
+	FirepowerMultiplier@LEVEL2:
+		RequiresCondition: rank-level2 && !rank-level3
 		Modifier: 120
-	SpeedMultiplier@ELITE:
-		RequiresCondition: rank-elite
+	DamageMultiplier@LEVEL2:
+		RequiresCondition: rank-level2 && !rank-level3
+		Modifier: 85
+	SpeedMultiplier@LEVEL2:
+		RequiresCondition: rank-level2 && !rank-level3
+		Modifier: 120
+	ReloadDelayMultiplier@LEVEL2:
+		RequiresCondition: rank-level2 && !rank-level3
+		Modifier: 85
+	InaccuracyMultiplier@LEVEL2:
+		RequiresCondition: rank-level2 && !rank-level3
+		Modifier: 80
+	# Level 3 bonuses
+	FirepowerMultiplier@LEVEL3:
+		RequiresCondition: rank-level3 && !rank-level4
+		Modifier: 130
+	DamageMultiplier@LEVEL3:
+		RequiresCondition: rank-level3 && !rank-level4
+		Modifier: 78
+	SpeedMultiplier@LEVEL3:
+		RequiresCondition: rank-level3 && !rank-level4
+		Modifier: 130
+	ReloadDelayMultiplier@LEVEL3:
+		RequiresCondition: rank-level3 && !rank-level4
+		Modifier: 78
+	InaccuracyMultiplier@LEVEL3:
+		RequiresCondition: rank-level3 && !rank-level4
+		Modifier: 70
+	# Level 4 bonuses
+	FirepowerMultiplier@LEVEL4:
+		RequiresCondition: rank-level4 && !rank-level5
 		Modifier: 140
-	ReloadDelayMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
-		Modifier: 90
-	ReloadDelayMultiplier@ELITE:
-		RequiresCondition: rank-elite
-		Modifier: 75
-	ChangesHealth@ELITE:
+	DamageMultiplier@LEVEL4:
+		RequiresCondition: rank-level4 && !rank-level5
+		Modifier: 72
+	SpeedMultiplier@LEVEL4:
+		RequiresCondition: rank-level4 && !rank-level5
+		Modifier: 140
+	ReloadDelayMultiplier@LEVEL4:
+		RequiresCondition: rank-level4 && !rank-level5
+		Modifier: 72
+	InaccuracyMultiplier@LEVEL4:
+		RequiresCondition: rank-level4 && !rank-level5
+		Modifier: 60
+	ChangesHealth@LEVEL4:
+		Step: 1
+		Delay: 150
+		StartIfBelow: 100
+		DamageCooldown: 200
+		RequiresCondition: rank-level4 && !rank-level5
+	# Level 5 bonuses
+	FirepowerMultiplier@LEVEL5:
+		RequiresCondition: rank-level5 && !rank-level6
+		Modifier: 150
+	DamageMultiplier@LEVEL5:
+		RequiresCondition: rank-level5 && !rank-level6
+		Modifier: 67
+	SpeedMultiplier@LEVEL5:
+		RequiresCondition: rank-level5 && !rank-level6
+		Modifier: 150
+	ReloadDelayMultiplier@LEVEL5:
+		RequiresCondition: rank-level5 && !rank-level6
+		Modifier: 67
+	InaccuracyMultiplier@LEVEL5:
+		RequiresCondition: rank-level5 && !rank-level6
+		Modifier: 50
+	ChangesHealth@LEVEL5:
+		Step: 2
+		Delay: 125
+		StartIfBelow: 100
+		DamageCooldown: 175
+		RequiresCondition: rank-level5 && !rank-level6
+	# Level 6 bonuses
+	FirepowerMultiplier@LEVEL6:
+		RequiresCondition: rank-level6 && !rank-level7
+		Modifier: 160
+	DamageMultiplier@LEVEL6:
+		RequiresCondition: rank-level6 && !rank-level7
+		Modifier: 62
+	SpeedMultiplier@LEVEL6:
+		RequiresCondition: rank-level6 && !rank-level7
+		Modifier: 160
+	ReloadDelayMultiplier@LEVEL6:
+		RequiresCondition: rank-level6 && !rank-level7
+		Modifier: 62
+	InaccuracyMultiplier@LEVEL6:
+		RequiresCondition: rank-level6 && !rank-level7
+		Modifier: 45
+	ChangesHealth@LEVEL6:
 		Step: 2
 		Delay: 100
 		StartIfBelow: 100
+		DamageCooldown: 150
+		RequiresCondition: rank-level6 && !rank-level7
+	# Level 7 bonuses
+	FirepowerMultiplier@LEVEL7:
+		RequiresCondition: rank-level7 && !rank-level8
+		Modifier: 170
+	DamageMultiplier@LEVEL7:
+		RequiresCondition: rank-level7 && !rank-level8
+		Modifier: 58
+	SpeedMultiplier@LEVEL7:
+		RequiresCondition: rank-level7 && !rank-level8
+		Modifier: 170
+	ReloadDelayMultiplier@LEVEL7:
+		RequiresCondition: rank-level7 && !rank-level8
+		Modifier: 58
+	InaccuracyMultiplier@LEVEL7:
+		RequiresCondition: rank-level7 && !rank-level8
+		Modifier: 40
+	ChangesHealth@LEVEL7:
+		Step: 3
+		Delay: 90
+		StartIfBelow: 100
 		DamageCooldown: 125
-		RequiresCondition: rank-veteran && !rank-elite
-	InaccuracyMultiplier@ELITE:
-		RequiresCondition: rank-elite
+		RequiresCondition: rank-level7 && !rank-level8
+	# Level 8 bonuses
+	FirepowerMultiplier@LEVEL8:
+		RequiresCondition: rank-level8 && !rank-level9
+		Modifier: 180
+	DamageMultiplier@LEVEL8:
+		RequiresCondition: rank-level8 && !rank-level9
+		Modifier: 55
+	SpeedMultiplier@LEVEL8:
+		RequiresCondition: rank-level8 && !rank-level9
+		Modifier: 180
+	ReloadDelayMultiplier@LEVEL8:
+		RequiresCondition: rank-level8 && !rank-level9
+		Modifier: 55
+	InaccuracyMultiplier@LEVEL8:
+		RequiresCondition: rank-level8 && !rank-level9
+		Modifier: 35
+	ChangesHealth@LEVEL8:
+		Step: 3
+		Delay: 80
+		StartIfBelow: 100
+		DamageCooldown: 100
+		RequiresCondition: rank-level8 && !rank-level9
+	# Level 9 bonuses
+	FirepowerMultiplier@LEVEL9:
+		RequiresCondition: rank-level9 && !rank-level10
+		Modifier: 190
+	DamageMultiplier@LEVEL9:
+		RequiresCondition: rank-level9 && !rank-level10
+		Modifier: 52
+	SpeedMultiplier@LEVEL9:
+		RequiresCondition: rank-level9 && !rank-level10
+		Modifier: 190
+	ReloadDelayMultiplier@LEVEL9:
+		RequiresCondition: rank-level9 && !rank-level10
+		Modifier: 52
+	InaccuracyMultiplier@LEVEL9:
+		RequiresCondition: rank-level9 && !rank-level10
+		Modifier: 30
+	ChangesHealth@LEVEL9:
+		Step: 4
+		Delay: 70
+		StartIfBelow: 100
+		DamageCooldown: 90
+		RequiresCondition: rank-level9 && !rank-level10
+	# Level 10 bonuses (maximum)
+	FirepowerMultiplier@LEVEL10:
+		RequiresCondition: rank-level10
+		Modifier: 200
+	DamageMultiplier@LEVEL10:
+		RequiresCondition: rank-level10
 		Modifier: 50
-	WithDecoration@VETERAN:
+	SpeedMultiplier@LEVEL10:
+		RequiresCondition: rank-level10
+		Modifier: 200
+	ReloadDelayMultiplier@LEVEL10:
+		RequiresCondition: rank-level10
+		Modifier: 50
+	InaccuracyMultiplier@LEVEL10:
+		RequiresCondition: rank-level10
+		Modifier: 25
+	ChangesHealth@LEVEL10:
+		Step: 5
+		Delay: 60
+		StartIfBelow: 100
+		DamageCooldown: 75
+		RequiresCondition: rank-level10
+	# Visual decorations
+	# Level 1-2: Star icon only
+	WithDecoration@LEVEL1:
 		Image: rank
 		Sequence: veteran
 		Palette: pips
 		Position: BottomRight
-		RequiresCondition: rank-veteran && !rank-elite
-	WithDecoration@ELITE:
+		RequiresCondition: rank-level1 && !rank-level2
+	WithDecoration@LEVEL2:
 		Image: rank
 		Sequence: elite
 		Palette: pips
 		Position: BottomRight
-		RequiresCondition: rank-elite
+		RequiresCondition: rank-level2 && !rank-level3
+	# Level 3+: Star icon + number badge
+	WithDecoration@LEVEL3:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level3 && !rank-level4
+	WithTextDecoration@LEVEL3_TEXT:
+		Text: 3
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level3 && !rank-level4
+	WithDecoration@LEVEL4:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level4 && !rank-level5
+	WithTextDecoration@LEVEL4_TEXT:
+		Text: 4
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level4 && !rank-level5
+	WithDecoration@LEVEL5:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level5 && !rank-level6
+	WithTextDecoration@LEVEL5_TEXT:
+		Text: 5
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level5 && !rank-level6
+	WithDecoration@LEVEL6:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level6 && !rank-level7
+	WithTextDecoration@LEVEL6_TEXT:
+		Text: 6
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level6 && !rank-level7
+	WithDecoration@LEVEL7:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level7 && !rank-level8
+	WithTextDecoration@LEVEL7_TEXT:
+		Text: 7
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level7 && !rank-level8
+	WithDecoration@LEVEL8:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level8 && !rank-level9
+	WithTextDecoration@LEVEL8_TEXT:
+		Text: 8
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level8 && !rank-level9
+	WithDecoration@LEVEL9:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level9 && !rank-level10
+	WithTextDecoration@LEVEL9_TEXT:
+		Text: 9
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level9 && !rank-level10
+	WithDecoration@LEVEL10:
+		Image: rank
+		Sequence: elite
+		Palette: pips
+		Position: BottomRight
+		Margin: 0, 0
+		RequiresCondition: rank-level10
+	WithTextDecoration@LEVEL10_TEXT:
+		Text: 10
+		Font: TinyBold
+		Position: BottomRight
+		Margin: 12, 2
+		RequiresCondition: rank-level10
+
+# Fast veterancy testing mode - use lower XP requirements for quick testing
+# Inherits all bonuses from ^GainsExperience but with much lower XP requirements
+^GainsExperienceFast:
+	Inherits: ^GainsExperience
+	GainsExperience:
+		Conditions:
+			10: rank-level1
+			20: rank-level2
+			30: rank-level3
+			40: rank-level4
+			50: rank-level5
+			60: rank-level6
+			70: rank-level7
+			80: rank-level8
+			90: rank-level9
+			100: rank-level10
 
 ^CrateStatModifiers:
 	FirepowerMultiplier@CRATES:
