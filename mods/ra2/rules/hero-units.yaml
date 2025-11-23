@@ -1,0 +1,353 @@
+# Hero Units - Warcraft 3 Style Heroes
+# Maximum 3 heroes per player
+# Can be recruited from Hero Monument/Command Center
+# Can be revived after death (with cost and time)
+
+#####################
+# ALLIED HEROES
+#####################
+
+# Tanya - Assault Specialist Hero
+# Role: Assassin / Demolition
+# Strengths: High damage to infantry and buildings, mobile, can swim
+# Weaknesses: Low HP compared to other heroes, vulnerable to vehicles
+HERO_TANYA:
+	Inherits: ^Hero
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Hero.Allied
+		BuildPaletteOrder: 10
+		Prerequisites: ~!gahero
+		Description: Elite commando hero.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special: C4 Demolition, Swimming
+	Valued:
+		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Tooltip:
+		Name: Tanya
+		GenericName: Hero
+	Selectable:
+		Bounds: 482, 1448, 0, -530
+		Voice: Select
+	Health:
+		HP: 400  # 3x elite infantry
+	Mobile:
+		Speed: 85  # Very fast
+		Locomotor: swimsuit
+		Voice: Move
+	RevealsShroud:
+		Range: 7c0  # Enhanced vision
+	Demolition:
+		Voice: Attack
+		DetonationDelay: 0
+		Flashes: 3
+	Armor:
+		Type: Flak
+	Passenger:
+		CustomPipType: red
+	# Dual pistols - high damage to infantry
+	Armament@PRIMARY:
+		Weapon: HeroTanyaPistols
+		RequiresCondition: !rank-level5
+	Armament@ELITE:
+		Weapon: HeroTanyaPistolsElite
+		RequiresCondition: rank-level5
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	VoiceAnnouncement:
+		Voice: Build
+	Voiced:
+		VoiceSet: TanyaVoice
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	-TakeCover:
+	# Hero metadata
+	HeroInfo:
+		ShortName: Tanya
+		Title: Elite Commando
+		Description: Legendary Allied special forces operative. Expert in infiltration and demolition.
+		Role: Assassin
+		Difficulty: Medium
+
+# Prism Commander - Prism Technology Hero
+# Role: Artillery / Long-range damage dealer
+# Strengths: Extreme range, high damage, beam refraction
+# Weaknesses: Slow, vulnerable at close range
+HERO_PRISM:
+	Inherits: ^Hero
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Hero.Allied
+		BuildPaletteOrder: 20
+		Prerequisites: ~!gahero, ~gaweap
+		Description: Prism technology expert hero.\n  Strong vs Everything\n  Weak vs Fast Units\n  Special: Long range beam weapon
+	Valued:
+		Cost: 2500
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Tooltip:
+		Name: Prism Commander
+		GenericName: Hero
+	Selectable:
+		Bounds: 482, 1448, 0, -530
+		Voice: Select
+	Health:
+		HP: 600  # 4x elite infantry
+	Mobile:
+		Speed: 60  # Slower than normal
+		Voice: Move
+	RevealsShroud:
+		Range: 9c0  # Excellent vision for targeting
+	Armor:
+		Type: Plate
+	Passenger:
+		CustomPipType: blue
+	# Prism beam - long range, high damage
+	Armament:
+		Weapon: HeroPrismBeam
+		LocalOffset: 0,0,256
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	Voiced:
+		VoiceSet: AlliedVehicleVoice
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	# Hero metadata
+	HeroInfo:
+		ShortName: Prism
+		Title: Light Architect
+		Description: Master of prism technology and advanced optics.
+		Role: Artillery
+		Difficulty: Hard
+
+# Chrono Commander - Temporal Manipulation Hero
+# Role: Mobility / Tactical control
+# Strengths: Can teleport, high mobility, slows enemies
+# Weaknesses: Lower direct damage
+HERO_CHRONO:
+	Inherits: ^Hero
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Hero.Allied
+		BuildPaletteOrder: 30
+		Prerequisites: ~!gahero, ~gatech
+		Description: Temporal manipulation hero.\n  Strong vs All\n  Weak vs Massed Units\n  Special: High mobility
+	Valued:
+		Cost: 2200
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Tooltip:
+		Name: Chrono Commander
+		GenericName: Hero
+	Selectable:
+		Bounds: 482, 1448, 0, -530
+		Voice: Select
+	Health:
+		HP: 500
+	Mobile:
+		Speed: 70
+		Voice: Move
+	RevealsShroud:
+		Range: 6c0
+	Armor:
+		Type: Light
+	Passenger:
+		CustomPipType: yellow
+	# Chrono rifle
+	Armament:
+		Weapon: HeroChronoRifle
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	Voiced:
+		VoiceSet: AlliedVehicleVoice
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	# Hero metadata
+	HeroInfo:
+		ShortName: Chrono
+		Title: Time Weaver
+		Description: Master of temporal mechanics and spacetime manipulation.
+		Role: Mobility
+		Difficulty: Very Hard
+	# TODO: Add Chronoshift ability when skill system is implemented
+
+#####################
+# SOVIET HEROES
+#####################
+
+# Yuri - Psychic Master Hero
+# Role: Controller / Support
+# Strengths: Mind control multiple units, detect cloaked units
+# Weaknesses: Slow, low direct damage
+HERO_YURI:
+	Inherits: ^Hero
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Hero.Soviet
+		BuildPaletteOrder: 10
+		Prerequisites: ~!nahero
+		Description: Psychic commander hero.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Snipers, Buildings\n  Special: Mind control, Psychic detection
+	Valued:
+		Cost: 2200
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Tooltip:
+		Name: Yuri
+		GenericName: Hero
+	Selectable:
+		Bounds: 482, 1448, 0, -530
+		Voice: Select
+	Health:
+		HP: 450
+	Mobile:
+		Speed: 55  # Slow
+		Voice: Move
+	RevealsShroud:
+		Range: 6c0
+	Armor:
+		Type: None
+	Passenger:
+		CustomPipType: red
+	# Mind control weapon
+	Armament:
+		Weapon: HeroMindControl
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	# Enhanced mind control capacity
+	MindController:
+		Capacity: 5  # Can control 5 units (hero bonus)
+		ControllingCondition: mindcontrolling
+	# Psychic detection - can see cloaked units
+	DetectCloaked:
+		Range: 8c0
+		DetectionTypes: Cloak
+	Voiced:
+		VoiceSet: YuriVoice
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	# Hero metadata
+	HeroInfo:
+		ShortName: Yuri
+		Title: Psychic Master
+		Description: Supreme psychic commander with unmatched mental powers.
+		Role: Controller
+		Difficulty: Hard
+
+# Boris - Airstrike Coordinator Hero
+# Role: Artillery / Fire support
+# Strengths: Can call airstrikes, good vision, strong vs vehicles
+# Weaknesses: Vulnerable to AA, relies on abilities
+HERO_BORIS:
+	Inherits: ^Hero
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Hero.Soviet
+		BuildPaletteOrder: 20
+		Prerequisites: ~!nahero, ~naweap
+		Description: Airstrike coordinator hero.\n  Strong vs Vehicles, Buildings\n  Weak vs AA, Fast Units\n  Special: Great vision for targeting
+	Valued:
+		Cost: 2300
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Tooltip:
+		Name: Boris
+		GenericName: Hero
+	Selectable:
+		Bounds: 482, 1448, 0, -530
+		Voice: Select
+	Health:
+		HP: 550
+	Mobile:
+		Speed: 65
+		Voice: Move
+	RevealsShroud:
+		Range: 8c0  # Great vision for designation
+	Armor:
+		Type: None
+	Passenger:
+		CustomPipType: yellow
+	# Assault rifle
+	Armament:
+		Weapon: HeroBorisRifle
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	Voiced:
+		VoiceSet: ConscriptVoice
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	# Hero metadata
+	HeroInfo:
+		ShortName: Boris
+		Title: Airstrike Commander
+		Description: Elite Soviet officer with direct air support access.
+		Role: Artillery
+		Difficulty: Medium
+	# TODO: Add laser designator ability when skill system is implemented
+
+# Tesla Commander - Electric Warfare Hero
+# Role: Tank / Frontline
+# Strengths: Highest HP, AOE damage, good vs mechanical units
+# Weaknesses: Slowest hero, short range, can be kited
+HERO_TESLA:
+	Inherits: ^Hero
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Hero.Soviet
+		BuildPaletteOrder: 30
+		Prerequisites: ~!nahero, ~natech
+		Description: Tesla technology hero.\n  Strong vs Infantry, Vehicles\n  Weak vs Long Range\n  Special: AOE damage, High durability
+	Valued:
+		Cost: 2400
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Tooltip:
+		Name: Tesla Commander
+		GenericName: Hero
+	Selectable:
+		Bounds: 482, 1448, 0, -530
+		Voice: Select
+	Health:
+		HP: 800  # Tankiest hero (5x elite infantry)
+	Mobile:
+		Speed: 50  # Slowest hero
+		Voice: Move
+	RevealsShroud:
+		Range: 5c0
+	Armor:
+		Type: Heavy  # Unique for infantry - very durable
+	Passenger:
+		CustomPipType: red
+	# Tesla weapon - AOE damage
+	Armament:
+		Weapon: HeroTeslaWeapon
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	Voiced:
+		VoiceSet: TeslaVoice
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	# Hero metadata
+	HeroInfo:
+		ShortName: Tesla
+		Title: Iron Warlord
+		Description: Heavily armored commander wielding devastating Tesla technology.
+		Role: Tank
+		Difficulty: Easy

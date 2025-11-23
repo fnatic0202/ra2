@@ -1,0 +1,263 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA2.Traits
+{
+	[Desc("Manages hero revival queue at hero altar.",
+		"Fallen heroes are added to queue and can be revived by paying cost and waiting.")]
+	public class HeroRevivalManagerInfo : TraitInfo
+	{
+		[Desc("Base cost to revive a hero.")]
+		public readonly int BaseRevivalCost = 500;
+
+		[Desc("Additional cost per hero level.")]
+		public readonly int CostPerLevel = 100;
+
+		[Desc("Base time (ticks) to revive a hero.")]
+		public readonly int BaseRevivalTime = 1500; // 60 seconds at 25 FPS
+
+		[Desc("Time reduction per level (ticks).")]
+		public readonly int TimeReductionPerLevel = 0;
+
+		[Desc("Sound to play when revival starts.")]
+		public readonly string RevivalStartSound = null;
+
+		[Desc("Sound to play when revival completes.")]
+		public readonly string RevivalCompleteSound = null;
+
+		[Desc("Notification when hero revives.")]
+		public readonly string RevivedNotification = "HeroRevived";
+
+		[Desc("Speech notification when hero revives.")]
+		public readonly string RevivedSpeech = null;
+
+		[Desc("Text message when revival starts.")]
+		public readonly string RevivalStartMessage = "Reviving {hero}... Cost: ${cost}";
+
+		[Desc("Text message when revival completes.")]
+		public readonly string RevivalCompleteMessage = "{hero} has been revived!";
+
+		[Desc("Text message when can't afford revival.")]
+		public readonly string CannotAffordMessage = "Insufficient funds to revive {hero}! (Need ${cost})";
+
+		[Desc("Color of revival messages.")]
+		public readonly Color MessageColor = Color.Cyan;
+
+		public override object Create(ActorInitializer init) { return new HeroRevivalManager(init.Self, this); }
+	}
+
+	public class HeroRevivalManager : ITick, INotifyOwnerChanged, INotifyCreated
+	{
+		readonly HeroRevivalManagerInfo info;
+		readonly Queue<Actor> revivalQueue = new();
+
+		Actor currentRevival = null;
+		int revivalTicks = 0;
+		int revivalCost = 0;
+		Player owner;
+		PlayerResources playerResources;
+		Exit exit;
+
+		public HeroRevivalManager(Actor self, HeroRevivalManagerInfo info)
+		{
+			this.info = info;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			owner = self.Owner;
+			playerResources = owner.PlayerActor.Trait<PlayerResources>();
+			exit = self.TraitOrDefault<Exit>();
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			owner = newOwner;
+			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+		}
+
+		public void AddToRevivalQueue(Actor hero)
+		{
+			if (hero == null || hero.IsDead)
+				return;
+
+			// Check if already in queue
+			if (revivalQueue.Contains(hero) || currentRevival == hero)
+				return;
+
+			revivalQueue.Enqueue(hero);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			// Start next revival if no current revival in progress
+			if (currentRevival == null && revivalQueue.Count > 0)
+			{
+				StartRevival(self, revivalQueue.Dequeue());
+			}
+
+			// Process current revival
+			if (currentRevival != null)
+			{
+				revivalTicks--;
+
+				if (revivalTicks <= 0)
+				{
+					CompleteRevival(self);
+				}
+			}
+		}
+
+		void StartRevival(Actor altar, Actor hero)
+		{
+			if (hero == null || hero.IsDead)
+			{
+				currentRevival = null;
+				return;
+			}
+
+			currentRevival = hero;
+
+			// Calculate cost based on hero level
+			var heroLevel = GetHeroLevel(hero);
+			revivalCost = info.BaseRevivalCost + (heroLevel * info.CostPerLevel);
+
+			// Calculate revival time
+			revivalTicks = info.BaseRevivalTime - (heroLevel * info.TimeReductionPerLevel);
+			if (revivalTicks < 25 * 10) // Minimum 10 seconds
+				revivalTicks = 25 * 10;
+
+			// Check if player can afford revival
+			if (!playerResources.CanGiveResources(revivalCost))
+			{
+				// Can't afford - put back in queue and try later
+				revivalQueue.Enqueue(hero);
+				currentRevival = null;
+
+				// Notify player
+				var heroInfo = hero.Info.TraitInfoOrDefault<HeroInfoInfo>();
+				var heroName = heroInfo != null ? heroInfo.ShortName : "Hero";
+				var message = info.CannotAffordMessage
+					.Replace("{hero}", heroName)
+					.Replace("{cost}", revivalCost.ToString());
+
+				TextNotificationsManager.AddTransientLine(owner, message);
+				return;
+			}
+
+			// Deduct cost
+			playerResources.TakeCash(revivalCost, true);
+
+			// Play sound
+			Game.Sound.PlayNotification(altar.World.Map.Rules, owner, "Sounds",
+				info.RevivalStartSound, owner.Faction.InternalName);
+
+			// Show message
+			var heroInfoMsg = hero.Info.TraitInfoOrDefault<HeroInfoInfo>();
+			var heroNameMsg = heroInfoMsg != null ? heroInfoMsg.ShortName : "Hero";
+			var startMessage = info.RevivalStartMessage
+				.Replace("{hero}", heroNameMsg)
+				.Replace("{cost}", revivalCost.ToString());
+
+			TextNotificationsManager.AddTransientLine(owner, startMessage);
+		}
+
+		void CompleteRevival(Actor altar)
+		{
+			if (currentRevival == null || currentRevival.IsDead)
+			{
+				currentRevival = null;
+				return;
+			}
+
+			// Revive the hero
+			var deathHandler = currentRevival.TraitOrDefault<HeroDeathHandler>();
+			if (deathHandler != null)
+			{
+				deathHandler.Revive(currentRevival);
+			}
+
+			// Restore health
+			var health = currentRevival.TraitOrDefault<Health>();
+			if (health != null)
+			{
+				health.InflictDamage(currentRevival, currentRevival, new Damage(-health.MaxHP), true);
+			}
+
+			// Move hero to altar exit
+			if (exit != null)
+			{
+				var exitCell = altar.Location + exit.Info.SpawnOffset;
+				var exitPos = altar.World.Map.CenterOfCell(exitCell);
+
+				// Teleport hero to exit
+				currentRevival.Trait<IPositionable>().SetPosition(currentRevival, exitCell);
+
+				// Make visible again
+				currentRevival.World.AddFrameEndTask(w =>
+				{
+					// Hero is now revived and visible
+				});
+			}
+
+			// Play notifications
+			Game.Sound.PlayNotification(altar.World.Map.Rules, owner, "Sounds",
+				info.RevivalCompleteSound, owner.Faction.InternalName);
+
+			Game.Sound.PlayNotification(altar.World.Map.Rules, owner, "Speech",
+				info.RevivedSpeech, owner.Faction.InternalName);
+
+			// Show message
+			var heroInfo = currentRevival.Info.TraitInfoOrDefault<HeroInfoInfo>();
+			var heroName = heroInfo != null ? heroInfo.ShortName : "Hero";
+			var completeMessage = info.RevivalCompleteMessage.Replace("{hero}", heroName);
+
+			TextNotificationsManager.AddTransientLine(owner, completeMessage);
+
+			// Clear current revival
+			currentRevival = null;
+		}
+
+		int GetHeroLevel(Actor hero)
+		{
+			var experience = hero.TraitOrDefault<GainsExperience>();
+			if (experience == null)
+				return 1;
+
+			// Simple approach: count experience level directly
+			// This is a simplified version - in a full implementation,
+			// you would need to check the actual level conditions
+			return 1; // Default to level 1 for now
+			// TODO: Implement proper level detection based on experience thresholds
+		}
+
+		public int GetQueueLength()
+		{
+			return revivalQueue.Count + (currentRevival != null ? 1 : 0);
+		}
+
+		public Actor GetCurrentRevival()
+		{
+			return currentRevival;
+		}
+
+		public int GetRemainingTicks()
+		{
+			return revivalTicks;
+		}
+	}
+}

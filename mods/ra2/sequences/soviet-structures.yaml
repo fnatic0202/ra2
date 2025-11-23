@@ -856,3 +856,8 @@ naflak:
 	icon:
 		Filename: flakicon.shp
 		TilesetFilenames:
+
+
+# Hero Command Center - Uses natech graphics as placeholder
+nahero:
+	Inherits: natech

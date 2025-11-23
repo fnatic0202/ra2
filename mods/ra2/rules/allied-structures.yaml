@@ -1167,3 +1167,59 @@ repairpad:
 	Interactable:
 	Tooltip:
 		Name: Service Depot
+
+# Hero Monument - Recruits and revives Allied heroes
+gahero:
+	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 95
+		Prerequisites: ~gapile, ~gatech
+		Description: Recruits and revives heroes.\n  Maximum 3 heroes per player.\n  Strong vs Everything\n  Special: Can revive fallen heroes
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Hero Monument
+	ProvidesPrerequisite:
+		Prerequisite: gahero
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	IsometricSelectable:
+		Height: 48
+	Health:
+		HP: 1500
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: -50
+	Production:
+		Produces: Hero.Allied
+	Exit@1:
+		SpawnOffset: -512,512,0
+		ExitCell: 0,1
+	Exit@2:
+		SpawnOffset: 512,512,0
+		ExitCell: 1,1
+	ProductionQueue@Hero:
+		Type: Hero.Allied
+		DisplayOrder: 10
+		Group: Hero
+		LowPowerModifier: 300
+		QueuedAudio: Training
+		ReadyAudio: UnitReady
+		BlockedAudio: NoDeploy
+	ProductionBar@Hero:
+		ProductionType: Hero.Allied
+	# TODO: Hero revival system (disabled until C# traits are fixed)
+	# HeroRevivalManager:
+	#	BaseRevivalCost: 500
+	#	CostPerLevel: 100
+	#	BaseRevivalTime: 1500
+	# TODO: Check production limit (disabled until C# traits are fixed)
+	# CheckProductionLimit:
+	#	Type: Hero.Allied
+	#	LimitReachedText: "Hero limit reached! Maximum 3 heroes allowed."

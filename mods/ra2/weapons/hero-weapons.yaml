@@ -1,0 +1,181 @@
+# Hero Weapons - High-powered weapons for hero units
+# Heroes deal 3-5x damage compared to normal units
+
+#####################
+# ALLIED HERO WEAPONS
+#####################
+
+# Tanya's Dual Pistols - Fast fire rate, devastating to infantry
+HeroTanyaPistols:
+	Inherits: ^MG
+	ValidTargets: Ground, Infantry
+	ReloadDelay: 30  # Fast fire rate
+	Range: 5c512
+	Report: tanyaatk1.aud
+	Projectile: Bullet
+		Speed: 1c682
+		Image: 120MM
+		ContrailLength: 5
+		ContrailColor: FFFF0040
+	Warhead@1Dam: SpreadDamage
+		Damage: 120  # 3x normal pistol
+		Versus:
+			None: 100
+			Flak: 90
+			Plate: 90
+			Light: 25
+			Medium: 15
+			Heavy: 10
+			Wood: 50
+			Steel: 25
+			Concrete: 25
+			Drone: 75
+			Rocket: 100
+		Spread: 128
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
+
+# Tanya's Elite Dual Pistols - Even more powerful
+HeroTanyaPistolsElite:
+	Inherits: HeroTanyaPistols
+	ReloadDelay: 20  # Even faster
+	Range: 6c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 180  # 5x normal pistol
+		Versus:
+			None: 100
+			Flak: 100
+			Plate: 100
+			Light: 30
+			Medium: 20
+			Heavy: 15
+
+# Prism Commander's Beam - Long range, high damage laser
+HeroPrismBeam:
+	Inherits: ^LargeBullet
+	ReloadDelay: 80
+	Range: 10c0  # Very long range
+	MinRange: 2c0
+	Report: prismtwr.aud
+	Projectile: LaserZap
+		Width: 128
+		Duration: 15
+		Color: FF0000FF
+		SecondaryColor: 800080FF
+		HitAnim: pulsefx1
+		HitAnimSequence: hit
+	Warhead@1Dam: SpreadDamage
+		Damage: 200  # High damage
+		Versus:
+			None: 100
+			Flak: 100
+			Plate: 100
+			Light: 100
+			Medium: 100
+			Heavy: 100
+			Wood: 75
+			Steel: 100
+			Concrete: 80
+			Drone: 100
+			Rocket: 100
+		Spread: 256
+		DamageTypes: BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: xplobig4.wav
+	# TODO: Add PrismRefraction warhead when custom trait is implemented
+
+# Chrono Commander's Rifle - Moderate damage with special effects
+HeroChronoRifle:
+	Inherits: ^MG
+	ReloadDelay: 50
+	Range: 6c0
+	Report: chrono2.aud
+	Projectile: Bullet
+		Speed: 1c682
+		Image: 120MM
+		Trail: chronobeam
+		TrailPalette: effect
+	Warhead@1Dam: SpreadDamage
+		Damage: 80  # Moderate damage
+		Versus:
+			None: 100
+			Flak: 100
+			Plate: 100
+			Light: 75
+			Medium: 60
+			Heavy: 50
+			Wood: 50
+			Steel: 50
+			Concrete: 50
+			Drone: 100
+			Rocket: 100
+		Spread: 128
+		DamageTypes: BulletDeath
+	# TODO: Add temporal slow effect when custom warhead is implemented
+
+#####################
+# SOVIET HERO WEAPONS
+#####################
+
+# Yuri's Mind Control - Enhanced mind control weapon (hero version)
+HeroMindControl:
+	Inherits: MindControl
+	ReloadDelay: 100  # Faster than normal Yuri (200)
+	Range: 6c0  # Longer range than normal (5c0)
+
+# Boris's Assault Rifle - Strong anti-vehicle weapon
+HeroBorisRifle:
+	Inherits: ^MG
+	ReloadDelay: 40
+	Range: 7c0
+	Report: borisatk.wav
+	Projectile: Bullet
+		Speed: 1c512
+		Image: 120MM
+		ContrailLength: 7
+		ContrailColor: FFAA0040
+	Warhead@1Dam: SpreadDamage
+		Damage: 100  # Good damage
+		Versus:
+			None: 75
+			Flak: 75
+			Plate: 75
+			Light: 100
+			Medium: 100
+			Heavy: 75
+			Wood: 50
+			Steel: 75
+			Concrete: 50
+			Drone: 100
+			Rocket: 100
+		Spread: 192
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Infantry, Structure, Wall, Husk, Trees
+	# TODO: Add laser designator ability when skill system is implemented
+
+# Tesla Commander's Weapon - AOE electric damage
+HeroTeslaWeapon:
+	Inherits: ElectricBolt
+	ReloadDelay: 50  # Faster than normal Tesla (60)
+	Range: 5c0  # Longer range than normal (4c0)
+	Warhead@1Dam: SpreadDamage
+		Damage: 150  # Much higher damage than normal (50)
+		Versus:
+			None: 100
+			Flak: 100
+			Plate: 100
+			Light: 100
+			Medium: 125  # Bonus vs mechanical
+			Heavy: 125   # Bonus vs mechanical
+			Wood: 50
+			Steel: 75
+			Concrete: 50
+			Drone: 150   # Extra bonus vs drones
+			Rocket: 100
+		Spread: 256  # Larger AOE
+		DamageTypes: ElectroDeath

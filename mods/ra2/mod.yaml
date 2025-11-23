@@ -74,6 +74,7 @@ Rules:
 	ra2|rules/allied-naval.yaml
 	ra2|rules/soviet-naval.yaml
 	ra2|rules/aircraft.yaml
+	ra2|rules/hero-units.yaml
 	ra2|rules/civilian-props.yaml
 	ra2|rules/trees.yaml
 	ra2|rules/civilian-naval.yaml
@@ -174,6 +175,7 @@ Weapons:
 	ra2|weapons/misc.yaml
 	ra2|weapons/missiles.yaml
 	ra2|weapons/zaps.yaml
+	ra2|weapons/hero-weapons.yaml
 
 Voices:
 	ra2|audio/voices.yaml

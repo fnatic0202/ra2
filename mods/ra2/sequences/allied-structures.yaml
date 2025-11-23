@@ -881,3 +881,19 @@ atesla:
 		Length: 8
 		ShadowStart: 8
 		Tick: 160
+
+# Hero Monument - Temporary placeholder using gatech graphics
+gahero:
+	idle:
+		Filename: gatech.shp
+		TilesetFilenames:
+			SNOW: gatech.shp
+	damaged-idle:
+		Filename: gatech.shp
+		TilesetFilenames:
+			SNOW: gatech.shp
+	icon:
+
+# Hero Monument - Uses gatech graphics as placeholder
+gahero:
+	Inherits: gatech

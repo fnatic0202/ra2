@@ -1,0 +1,178 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System.Linq;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA2.Traits
+{
+	[Desc("Handles hero death by preventing removal and enabling revival.",
+		"Heroes enter a 'fallen' state instead of dying, and can be revived at hero altars.")]
+	public class HeroDeathHandlerInfo : ConditionalTraitInfo
+	{
+		[GrantedConditionReference]
+		[Desc("Condition to grant when hero falls (is killed but not removed).")]
+		public readonly string FallenCondition = "hero-fallen";
+
+		[Desc("Notification to play when hero falls.")]
+		public readonly string FallenNotification = "HeroFallen";
+
+		[Desc("Speech notification when hero falls.")]
+		public readonly string FallenSpeech = null;
+
+		[Desc("Text message to show when hero falls.")]
+		public readonly string FallenMessage = "Hero has fallen!";
+
+		[Desc("Should the hero become invisible when fallen?")]
+		public readonly bool HideWhenFallen = true;
+
+		[Desc("Should the hero be teleported off-map when fallen?")]
+		public readonly bool TeleportOffMap = true;
+
+		[Desc("Color of the text notification.")]
+		public readonly Color MessageColor = Color.Red;
+
+		public override object Create(ActorInitializer init) { return new HeroDeathHandler(init.Self, this); }
+	}
+
+	public class HeroDeathHandler : ConditionalTrait<HeroDeathHandlerInfo>, INotifyKilled, INotifyDamage
+	{
+		readonly Health health;
+		int fallenToken = Actor.InvalidConditionToken;
+		bool hasFallen = false;
+
+		public bool HasFallen => hasFallen;
+
+		public HeroDeathHandler(Actor self, HeroDeathHandlerInfo info)
+			: base(info)
+		{
+			health = self.Trait<Health>();
+		}
+
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+		}
+
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
+		{
+			// If hero has fallen and is being damaged, absorb all damage
+			if (hasFallen)
+				e.Damage = new Damage(0);
+		}
+
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		{
+			if (IsTraitDisabled || hasFallen)
+				return;
+
+			// Mark hero as fallen instead of killed
+			hasFallen = true;
+
+			// Grant fallen condition
+			if (!string.IsNullOrEmpty(Info.FallenCondition))
+			{
+				if (fallenToken == Actor.InvalidConditionToken)
+					fallenToken = self.GrantCondition(Info.FallenCondition);
+			}
+
+			// Play notifications
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
+				Info.FallenSpeech, self.Owner.Faction.InternalName);
+
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds",
+				Info.FallenNotification, self.Owner.Faction.InternalName);
+
+			// Show text notification
+			if (!string.IsNullOrEmpty(Info.FallenMessage))
+			{
+				var heroInfo = self.Info.TraitInfoOrDefault<HeroInfoInfo>();
+				var heroName = heroInfo != null ? heroInfo.ShortName : "Hero";
+				var message = Info.FallenMessage.Replace("{hero}", heroName);
+
+				TextNotificationsManager.AddTransientLine(self.Owner, message);
+			}
+
+			// Restore health to prevent actual death
+			health.InflictDamage(self, self, new Damage(-health.MaxHP), true);
+
+			// Find and notify revival manager
+			NotifyRevivalManager(self);
+
+			// Handle visibility
+			if (Info.HideWhenFallen || Info.TeleportOffMap)
+			{
+				self.World.AddFrameEndTask(w =>
+				{
+					if (self.IsInWorld)
+					{
+						if (Info.TeleportOffMap)
+						{
+							// Move hero to off-map location (far corner of map)
+							var mapSize = w.Map.MapSize;
+							var offMapPos = new CPos(mapSize.X + 10, mapSize.Y + 10);
+							self.QueueActivity(false, new Move.Move(offMapPos));
+						}
+
+						if (Info.HideWhenFallen)
+						{
+							// Make hero invisible
+							self.TraitsImplementing<IVisibilityModifier>().ToList();
+						}
+					}
+				});
+			}
+		}
+
+		void NotifyRevivalManager(Actor hero)
+		{
+			// Find the player's hero altar with revival manager
+			var altars = hero.Owner.World.ActorsHavingTrait<HeroRevivalManager>()
+				.Where(a => a.Owner == hero.Owner && !a.IsDead);
+
+			var altar = altars.FirstOrDefault();
+			if (altar != null)
+			{
+				var revivalManager = altar.Trait<HeroRevivalManager>();
+				revivalManager.AddToRevivalQueue(hero);
+			}
+			else
+			{
+				// No altar found - hero cannot be revived
+				TextNotificationsManager.AddTransientLine(hero.Owner,
+					"Hero cannot be revived - no Hero Altar!");
+			}
+		}
+
+		public void Revive(Actor self)
+		{
+			if (!hasFallen)
+				return;
+
+			// Remove fallen condition
+			if (fallenToken != Actor.InvalidConditionToken)
+			{
+				fallenToken = self.RevokeCondition(fallenToken);
+				fallenToken = Actor.InvalidConditionToken;
+			}
+
+			// Restore full health
+			health.InflictDamage(self, self, new Damage(-health.MaxHP), true);
+
+			// Clear fallen flag
+			hasFallen = false;
+
+			// Restore visibility will happen automatically when hero is moved back to map
+		}
+	}
+}

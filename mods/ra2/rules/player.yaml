@@ -72,6 +72,15 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
+	# TODO: Hero production limits (disabled until C# traits are fixed)
+	# ProductionLimit@HeroAllied:
+	#	Type: Hero.Allied
+	#	Maximum: 3
+	#	CountQueuedUnits: true
+	# ProductionLimit@HeroSoviet:
+	#	Type: Hero.Soviet
+	#	Maximum: 3
+	#	CountQueuedUnits: true
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio

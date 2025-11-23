@@ -504,6 +504,28 @@
 		Margin: 12, 2
 		RequiresCondition: rank-level10
 
+# Hero base template - Warcraft 3 style heroes with enhanced stats
+# NOTE: Heroes don't inherit ^MindControllable so they can't be mind controlled
+# NOTE: Heroes don't inherit Crushable by default
+^Hero:
+	Inherits: ^Infantry
+	# Heroes give massive experience when killed
+	GivesExperience:
+		Experience: 500
+		PlayerExperienceMultiplier: 2
+	# Heroes have priority selection
+	Selectable:
+		Priority: 100
+	# TODO: Hero death handler - enables revival system (disabled until C# traits are fixed)
+	# HeroDeathHandler:
+	#	FallenCondition: hero-fallen
+	#	FallenNotification: HeroFallen
+	#	FallenMessage: "{hero} has fallen!"
+	#	HideWhenFallen: true
+	#	TeleportOffMap: true
+	# TODO: Add HeroAbilitySlots for future skill system (4 slots: Q,W,E,R)
+	# TODO: Add HeroInventory for future item system (6 slots: 1-6)
+
 # Fast veterancy testing mode - use lower XP requirements for quick testing
 # Inherits all bonuses from ^GainsExperience but with much lower XP requirements
 ^GainsExperienceFast:

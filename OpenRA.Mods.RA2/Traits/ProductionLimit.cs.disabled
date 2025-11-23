@@ -1,0 +1,183 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA2.Traits
+{
+	[Desc("Limits the number of units that can be produced of a specific type.",
+		"Useful for limiting hero units per player (e.g., maximum 3 heroes).")]
+	public class ProductionLimitInfo : TraitInfo
+	{
+		[FieldLoader.Require]
+		[Desc("Production queue type to limit (e.g., 'Hero.Allied', 'Hero.Soviet').")]
+		public readonly string Type = null;
+
+		[Desc("Maximum number of units of this type allowed.")]
+		public readonly int Maximum = 3;
+
+		[Desc("Should we count units in production queue?")]
+		public readonly bool CountQueuedUnits = true;
+
+		public override object Create(ActorInitializer init) { return new ProductionLimit(init.Self, this); }
+	}
+
+	public class ProductionLimit : INotifyCreated, INotifyOwnerChanged
+	{
+		readonly ProductionLimitInfo info;
+		Player owner;
+
+		public ProductionLimit(Actor self, ProductionLimitInfo info)
+		{
+			this.info = info;
+			owner = self.Owner;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			owner = self.Owner;
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			owner = newOwner;
+		}
+
+		public int GetCurrentCount()
+		{
+			if (owner == null)
+				return 0;
+
+			// Count all actors of this production type owned by the player
+			var count = owner.World.ActorsHavingTrait<Buildable>()
+				.Count(a => a.Owner == owner &&
+					a.Info.HasTraitInfo<BuildableInfo>() &&
+					a.Info.TraitInfo<BuildableInfo>().Queue.Contains(info.Type));
+
+			// Optionally count queued units
+			if (info.CountQueuedUnits)
+			{
+				var productionQueues = owner.PlayerActor.TraitsImplementing<ProductionQueue>()
+					.Where(q => q.Info.Type == info.Type);
+
+				foreach (var queue in productionQueues)
+					count += queue.AllQueued().Count();
+			}
+
+			return count;
+		}
+
+		public bool CanProduceMore()
+		{
+			return GetCurrentCount() < info.Maximum;
+		}
+
+		public int GetRemaining()
+		{
+			return info.Maximum - GetCurrentCount();
+		}
+	}
+
+	[Desc("Checks production limits before allowing production.",
+		"Must be placed on the production building (e.g., hero altar).")]
+	public class CheckProductionLimitInfo : TraitInfo
+	{
+		[FieldLoader.Require]
+		[Desc("Production queue type to check (e.g., 'Hero.Allied').")]
+		public readonly string Type = null;
+
+		[Desc("Text notification when limit is reached.")]
+		public readonly string LimitReachedText = "Hero limit reached!";
+
+		[Desc("Speech notification when limit is reached.")]
+		public readonly string LimitReachedSpeech = null;
+
+		public override object Create(ActorInitializer init) { return new CheckProductionLimit(init.Self, this); }
+	}
+
+	public class CheckProductionLimit : INotifyCreated, IResolveOrder, ITick
+	{
+		readonly CheckProductionLimitInfo info;
+		ProductionLimit limitTrait;
+		ProductionQueue productionQueue;
+		Player owner;
+
+		public CheckProductionLimit(Actor self, CheckProductionLimitInfo info)
+		{
+			this.info = info;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			owner = self.Owner;
+
+			// Find the ProductionLimit trait on the player actor
+			limitTrait = owner.PlayerActor.TraitsImplementing<ProductionLimit>()
+				.FirstOrDefault(l => l.info.Type == info.Type);
+
+			// Get production queue
+			productionQueue = self.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => q.Info.Type == info.Type);
+		}
+
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		{
+			// Intercept production orders
+			if (order.OrderString != "StartProduction" && order.OrderString != "PauseProduction")
+				return;
+
+			if (productionQueue == null || limitTrait == null)
+				return;
+
+			// Check if we can produce more
+			if (order.OrderString == "StartProduction" && !limitTrait.CanProduceMore())
+			{
+				// Reject production - show message
+				var remaining = limitTrait.GetRemaining();
+				var message = $"{info.LimitReachedText} ({remaining}/{limitTrait.info.Maximum})";
+
+				Game.Sound.PlayNotification(self.World.Map.Rules, owner, "Speech",
+					info.LimitReachedSpeech, owner.Faction.InternalName);
+
+				TextNotificationsManager.AddTransientLine(owner, message);
+			}
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			// Continuously check and pause queue if limit reached
+			if (productionQueue == null || limitTrait == null)
+				return;
+
+			// If limit reached and queue is not paused, pause it
+			if (!limitTrait.CanProduceMore() && !productionQueue.IsValidating)
+			{
+				// Block new production
+				foreach (var item in productionQueue.AllQueued())
+				{
+					if (item.Started && !item.Done)
+					{
+						// Allow current production to finish
+						continue;
+					}
+					else if (!item.Started)
+					{
+						// Cancel queued items that haven't started
+						productionQueue.EndProduction(item);
+					}
+				}
+			}
+		}
+	}
+}
