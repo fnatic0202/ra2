@@ -642,3 +642,273 @@ Container@PLAYER_WIDGETS:
 					Height: 25
 					Text: Select BlockedByActor
 					Font: Regular
+		Background@DEV_DEBUG_PANEL:
+			Logic: DevDebugPanelLogic
+			X: 800
+			Y: 100
+			Width: 420
+			Height: 480
+			Visible: true
+			Background: dialog
+			Children:
+				Background@TITLE_BAR:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: 30
+					Children:
+						Label@TITLE:
+							X: 10
+							Y: 8
+							Font: Bold
+							Text: Developer Debug Panel
+						Button@CLOSE_BUTTON:
+							X: PARENT_RIGHT - 30
+							Y: 5
+							Width: 25
+							Height: 20
+							Text: X
+							Font: Bold
+
+				Container@CONTENT:
+					X: 10
+					Y: 35
+					Width: PARENT_RIGHT - 20
+					Height: PARENT_BOTTOM - 45
+					Children:
+						Label@SECTION_UNIT_INFO:
+							X: 0
+							Y: 0
+							Font: Bold
+							Text: Selected Unit Info
+							Width: PARENT_RIGHT
+
+						Label@UNIT_NAME:
+							X: 0
+							Y: 25
+							Font: Regular
+							Text: No Unit Selected
+							Width: PARENT_RIGHT
+
+						Label@UNIT_LEVEL:
+							X: 0
+							Y: 45
+							Font: Regular
+							Text: Level: N/A
+							Width: PARENT_RIGHT
+
+						Label@UNIT_HEALTH:
+							X: 0
+							Y: 65
+							Font: Regular
+							Text: Health: N/A
+							Width: PARENT_RIGHT
+
+						Label@SECTION_VETERANCY:
+							X: 0
+							Y: 95
+							Font: Bold
+							Text: Veterancy Control (0-10 Levels)
+							Width: PARENT_RIGHT
+
+						Container@VETERANCY_BUTTONS_ROW1:
+							X: 0
+							Y: 120
+							Width: PARENT_RIGHT
+							Height: 30
+							Children:
+								Button@VET_LEVEL_0:
+									X: 0
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 0
+									Font: Regular
+
+								Button@VET_LEVEL_1:
+									X: 40
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 1
+									Font: Regular
+
+								Button@VET_LEVEL_2:
+									X: 80
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 2
+									Font: Regular
+
+								Button@VET_LEVEL_3:
+									X: 120
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 3
+									Font: Regular
+
+								Button@VET_LEVEL_4:
+									X: 160
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 4
+									Font: Regular
+
+								Button@VET_LEVEL_5:
+									X: 200
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 5
+									Font: Regular
+
+						Container@VETERANCY_BUTTONS_ROW2:
+							X: 0
+							Y: 155
+							Width: PARENT_RIGHT
+							Height: 30
+							Children:
+								Button@VET_LEVEL_6:
+									X: 0
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 6
+									Font: Regular
+
+								Button@VET_LEVEL_7:
+									X: 40
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 7
+									Font: Regular
+
+								Button@VET_LEVEL_8:
+									X: 80
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 8
+									Font: Regular
+
+								Button@VET_LEVEL_9:
+									X: 120
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 9
+									Font: Regular
+
+								Button@VET_LEVEL_10:
+									X: 160
+									Y: 0
+									Width: 35
+									Height: 25
+									Text: 10
+									Font: Regular
+
+						Label@SECTION_HEALTH:
+							X: 0
+							Y: 200
+							Font: Bold
+							Text: Health Control
+							Width: PARENT_RIGHT
+
+						Container@HEALTH_BUTTONS:
+							X: 0
+							Y: 225
+							Width: PARENT_RIGHT
+							Height: 35
+							Children:
+								Button@HEAL_FULL:
+									X: 0
+									Y: 0
+									Width: 120
+									Height: 30
+									Text: Heal Full
+									Font: Regular
+
+								Button@DAMAGE_HALF:
+									X: 130
+									Y: 0
+									Width: 120
+									Height: 30
+									Text: -50% HP
+									Font: Regular
+
+								Button@KILL_UNIT:
+									X: 260
+									Y: 0
+									Width: 120
+									Height: 30
+									Text: Kill Unit
+									Font: Regular
+
+						Label@SECTION_ATTRIBUTES:
+							X: 0
+							Y: 275
+							Font: Bold
+							Text: Attribute Modifiers
+							Width: PARENT_RIGHT
+
+						Container@ATTRIBUTE_BUTTONS:
+							X: 0
+							Y: 300
+							Width: PARENT_RIGHT
+							Height: 70
+							Children:
+								Button@GIVE_FIREPOWER:
+									X: 0
+									Y: 0
+									Width: 120
+									Height: 30
+									Text: +Firepower
+									Font: Regular
+
+								Button@GIVE_SPEED:
+									X: 130
+									Y: 0
+									Width: 120
+									Height: 30
+									Text: +Speed
+									Font: Regular
+
+								Button@RESET_ATTRIBUTES:
+									X: 0
+									Y: 40
+									Width: 250
+									Height: 30
+									Text: Reset All Attributes
+									Font: Bold
+
+						Label@SECTION_INSTRUCTIONS:
+							X: 0
+							Y: 385
+							Font: Regular
+							Text: Instructions:
+							Width: PARENT_RIGHT
+
+						Label@INSTRUCTION_1:
+							X: 0
+							Y: 405
+							Font: Tiny
+							Text: 1. Select a unit on the battlefield
+							Width: PARENT_RIGHT
+
+						Label@INSTRUCTION_2:
+							X: 0
+							Y: 420
+							Font: Tiny
+							Text: 2. Use buttons to modify unit properties
+							Width: PARENT_RIGHT
+
+						Label@INSTRUCTION_3:
+							X: 0
+							Y: 435
+							Font: Tiny
+							Text: 3. Highlighted level = current veterancy
+							Width: PARENT_RIGHT

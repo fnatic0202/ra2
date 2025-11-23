@@ -45,3 +45,16 @@ _ReSharper.*/
 
 # IntelliJ files
 .idea
+
+# AI tools and temporary files
+.serena/
+.ra2_aliases
+*.swp
+*.swo
+
+# Test logs
+test-logs/
+
+# Temporary documentation
+*_TEMP.md
+*_OLD.md
