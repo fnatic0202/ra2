@@ -38,7 +38,9 @@ ra2/
 ├── docs/                      # Documentation
 │   ├── development/          # Development guides
 │   ├── testing/             # Testing guides
-│   └── game-design/         # Game design docs
+│   ├── game-design/         # Game design docs
+│   └── features/            # Feature documentation
+│       └── hero-revival-system/  # Hero system docs & examples
 │
 ├── scripts/                   # Development and test scripts
 │   ├── test/                # Quick test scripts
@@ -52,6 +54,9 @@ ra2/
 │
 ├── OpenRA.Mods.RA2/         # C# custom code
 │   └── Traits/              # Custom game traits
+│       ├── HeroDeathHandler.cs       # Hero death & revival
+│       ├── HeroRevivalManager.cs     # Revival queue management
+│       └── ProductionLimit.cs        # Production monitoring
 │
 ├── .claude/                  # Claude Code configuration
 │   ├── commands/            # Slash commands
@@ -96,7 +101,18 @@ See [scripts/README.md](scripts/README.md) for all available scripts.
 
 ## 🎮 Features
 
-### New 10-Level Veterancy System
+### ⭐ Hero Revival System (NEW!)
+Complete Warcraft 3-style hero system with revival mechanics:
+- **6 Unique Heroes**: 3 Allied (Tanya, Prism Commander, Chrono Commander) + 3 Soviet (Yuri, Boris, Tesla Commander)
+- **Hero Altars**: Dedicated buildings for hero production and revival
+- **Revival Mechanics**: Heroes respawn after death for a cost ($500 + level×$100) and 60-second wait
+- **Production Limits**: Maximum 3 heroes per player
+- **Visual Identification**: Gold "HERO" badge above hero units
+- **Full RA2 Integration**: Uses standard Infantry production sidebar
+
+📖 **[Read More](docs/features/hero-revival-system/README.md)** | 📋 **[Changelog](docs/features/hero-revival-system/CHANGELOG.md)**
+
+### 10-Level Veterancy System
 - Extends original 3-level system to 10 levels
 - Progressive stat bonuses (firepower, armor, speed)
 - Health regeneration at higher levels
