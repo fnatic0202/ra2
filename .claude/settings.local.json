@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export DOTNET_ROOT=$HOME/.dotnet)",
+      "Bash(export PATH=$DOTNET_ROOT:$PATH)",
+      "Bash(./launch-game.sh:*)",
+      "Bash(timeout 15 ./launch-game.sh:*)",
+      "Bash(./utility.sh:*)",
+      "Bash(timeout 10 ./launch-game.sh:*)",
+      "Bash(chmod:*)",
+      "Bash(timeout:*)",
+      "Bash(./sync-to-windows.sh)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd multi-agent game development architecture\n\nImplement a comprehensive multi-agent system for OpenRA RA2 mod development:\n\nArchitecture:\n- 3-tier system: Design → Implementation → Validation\n- 7 specialized agents coordinated by project manager\n- Shared knowledge base for consistent development\n\nAgents:\n- Game PM: Orchestrates complex tasks and delegates to specialists\n- Game Designer: Creates unit/mechanic designs with balanced stats\n- Game Balancer: Analyzes DPS, cost-efficiency, counter relationships\n- Config Engineer: Implements YAML configurations for units/weapons\n- Trait Developer: Develops custom C# traits and mechanics\n- Game Tester: Performs in-game testing and bug reporting\n- Config Validator: Validates YAML syntax and reference integrity\n\nKnowledge Base:\n- Comprehensive OpenRA development reference (28KB)\n- Trait system documentation (50+ traits)\n- Weapon and armor systems with damage calculations\n- Balance formulas and numeric references\n- RA2-specific systems (mind control, chronoshift, etc)\n- Development task templates and best practices\n\nFiles Created:\n- .claude/commands/game/*.md (7 agent implementations)\n- .claude/knowledge/openra-game-dev.md (complete reference)\n- .claude/GAME_DEV_GUIDE.md (quick start guide)\n- .serena/session-multi-agent-architecture.md (session summary)\n\nUsage:\n  /game:pm [task]        - Coordinate complex tasks automatically\n  /game:design [unit]    - Create design documents\n  /game:config [spec]    - Implement YAML configurations\n  /game:test            - Perform in-game testing\n  /game:validate        - Validate configurations\n\nThis architecture enables efficient game content development through\nspecialized agents with clear responsibilities and quality gates.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nEnhance Game PM documentation with comprehensive guide\n\nExpand the Game PM agent documentation from 99 to 1082 lines with:\n\nOverview & Value Proposition:\n- Explain why Game PM is needed\n- 6 key value points (task breakdown, delegation, tracking, quality, context, recovery)\n\nDetailed Agent Profiles:\n- Comprehensive description of all 7 specialized agents\n- Input/output specifications for each agent\n- Usage scenarios and best use cases\n\nWorkflow Guidelines:\n- Standard 7-step workflow process\n- 4 scenario-specific workflows (new unit, balance, mechanic, batch)\n- Detailed execution steps for each scenario\n\nTask Coordination Protocol:\n- 6-phase coordination process\n- Requirement analysis checklist\n- Task planning with TodoWrite examples\n- Agent delegation templates and best practices\n- Progress monitoring and error handling\n- Result integration and user reporting\n\nKnowledge Management:\n- Required resources to read before delegation\n- Knowledge transfer patterns\n- Context passing examples\n\nBest Practices:\n- 5 DO examples with code\n- 5 DON''T anti-patterns with corrections\n- Clear explanations for each practice\n\nAdvanced Techniques:\n- Parallel delegation for efficiency\n- Incremental development approach\n- Intelligent error recovery\n- Context compression strategies\n- Automated quality gates\n\nComplete Examples:\n- Example 1: Add new unit (full step-by-step with code)\n- Example 2: Batch balance adjustment\n- Detailed PM execution process for each\n\nTroubleshooting Guide:\n- 5 common problems with solutions\n- Symptoms, diagnosis, and resolution code\n- Error handling strategies\n\nThis comprehensive guide enables effective use of the Game PM agent\nfor complex game development tasks with proper coordination.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(make:*)",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(dotnet build:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(git commit:*)",
+      "Bash(timeout 30 ./launch-game.sh:*)",
+      "Bash(/tmp/soviet-temp)",
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(unexpand:*)",
+      "Bash(/tmp/hero-units-tabbed.yaml)",
+      "Bash(tee:*)",
+      "Bash(Features\" section at top of index\n- Link to FEATURES.md for complete feature list\n- Link to hero-revival-system documentation\n- Updated directory structure showing features/ folder\n\nREADME.md:\n- Added \"Project Documentation\" section in Resources\n- Link to FEATURES.md for versioned feature tracking\n- Link to Documentation Center\n\nThis provides a single source of truth for all project features with\nversion numbers, release dates, status tracking, and comprehensive\ndocumentation links.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
