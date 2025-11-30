@@ -377,3 +377,36 @@ cleg:
 		Start: 165
 	icon:
 		Filename: clegicon.shp
+
+# Hero Units - Using base unit graphics as placeholders
+hero_tanya:
+	Inherits: tany
+
+hero_prism:
+	Inherits: ^ArmedInfantry
+	Defaults:
+		Filename: cleg.shp
+	icon:
+		Filename: clegicon.shp
+
+hero_chrono:
+	Inherits: ^ArmedInfantry
+	Defaults:
+		Filename: seal.shp
+		TilesetFilenames:
+			SNOW: seala.shp
+	stand:
+	idle1:
+	idle2:
+	die1:
+	die2:
+	shoot:
+	prone-shoot:
+	prone-stand:
+	prone-run:
+	liedown:
+	standup:
+	run:
+		Tick: 120
+	icon:
+		Filename: sealicon.shp

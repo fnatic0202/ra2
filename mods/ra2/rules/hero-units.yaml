@@ -15,14 +15,13 @@ HERO_TANYA:
 	Inherits: ^Hero
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
-		Queue: Hero.Allied
-		BuildPaletteOrder: 10
+		Queue: Infantry
+		BuildPaletteOrder: 100
 		Prerequisites: ~!gahero
+		BuildLimit: 3
 		Description: Elite commando hero.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special: C4 Demolition, Swimming
 	Valued:
 		Cost: 2000
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
 	Tooltip:
 		Name: Tanya
 		GenericName: Hero
@@ -80,14 +79,13 @@ HERO_PRISM:
 	Inherits: ^Hero
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
-		Queue: Hero.Allied
-		BuildPaletteOrder: 20
+		Queue: Infantry
+		BuildPaletteOrder: 101
 		Prerequisites: ~!gahero, ~gaweap
+		BuildLimit: 3
 		Description: Prism technology expert hero.\n  Strong vs Everything\n  Weak vs Fast Units\n  Special: Long range beam weapon
 	Valued:
 		Cost: 2500
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
 	Tooltip:
 		Name: Prism Commander
 		GenericName: Hero
@@ -134,14 +132,13 @@ HERO_CHRONO:
 	Inherits: ^Hero
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
-		Queue: Hero.Allied
-		BuildPaletteOrder: 30
+		Queue: Infantry
+		BuildPaletteOrder: 102
 		Prerequisites: ~!gahero, ~gatech
+		BuildLimit: 3
 		Description: Temporal manipulation hero.\n  Strong vs All\n  Weak vs Massed Units\n  Special: High mobility
 	Valued:
 		Cost: 2200
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
 	Tooltip:
 		Name: Chrono Commander
 		GenericName: Hero
@@ -192,14 +189,13 @@ HERO_YURI:
 	Inherits: ^Hero
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
-		Queue: Hero.Soviet
-		BuildPaletteOrder: 10
+		Queue: Infantry
+		BuildPaletteOrder: 100
 		Prerequisites: ~!nahero
+		BuildLimit: 3
 		Description: Psychic commander hero.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Snipers, Buildings\n  Special: Mind control, Psychic detection
 	Valued:
 		Cost: 2200
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
 	Tooltip:
 		Name: Yuri
 		GenericName: Hero
@@ -253,14 +249,13 @@ HERO_BORIS:
 	Inherits: ^Hero
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
-		Queue: Hero.Soviet
-		BuildPaletteOrder: 20
+		Queue: Infantry
+		BuildPaletteOrder: 101
 		Prerequisites: ~!nahero, ~naweap
+		BuildLimit: 3
 		Description: Airstrike coordinator hero.\n  Strong vs Vehicles, Buildings\n  Weak vs AA, Fast Units\n  Special: Great vision for targeting
 	Valued:
 		Cost: 2300
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
 	Tooltip:
 		Name: Boris
 		GenericName: Hero
@@ -307,14 +302,13 @@ HERO_TESLA:
 	Inherits: ^Hero
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
-		Queue: Hero.Soviet
-		BuildPaletteOrder: 30
+		Queue: Infantry
+		BuildPaletteOrder: 102
 		Prerequisites: ~!nahero, ~natech
+		BuildLimit: 3
 		Description: Tesla technology hero.\n  Strong vs Infantry, Vehicles\n  Weak vs Long Range\n  Special: AOE damage, High durability
 	Valued:
 		Cost: 2400
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
 	Tooltip:
 		Name: Tesla Commander
 		GenericName: Hero
@@ -339,7 +333,7 @@ HERO_TESLA:
 		Voice: Attack
 		FacingTolerance: 0
 	Voiced:
-		VoiceSet: TeslaVoice
+		VoiceSet: ConscriptVoice
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:

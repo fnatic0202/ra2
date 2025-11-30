@@ -1131,29 +1131,32 @@ nahero:
 	Power:
 		Amount: -50
 	Production:
-		Produces: Hero.Soviet
+		Produces: Infantry
 	Exit@1:
 		SpawnOffset: -512,512,0
 		ExitCell: 0,1
 	Exit@2:
 		SpawnOffset: 512,512,0
 		ExitCell: 1,1
-	ProductionQueue@Hero:
-		Type: Hero.Soviet
+	ProductionQueue@Infantry:
+		Type: Infantry
 		DisplayOrder: 10
-		Group: Hero
+		Group: Infantry
 		LowPowerModifier: 300
 		QueuedAudio: Training
 		ReadyAudio: UnitReady
 		BlockedAudio: NoDeploy
-	ProductionBar@Hero:
-		ProductionType: Hero.Soviet
-	# TODO: Hero revival system (disabled until C# traits are fixed)
-	# HeroRevivalManager:
-	#	BaseRevivalCost: 500
-	#	CostPerLevel: 100
-	#	BaseRevivalTime: 1500
-	# TODO: Check production limit (disabled until C# traits are fixed)
-	# CheckProductionLimit:
-	#	Type: Hero.Soviet
-	#	LimitReachedText: "Hero limit reached! Maximum 3 heroes allowed."
+	ProductionBar@Infantry:
+		ProductionType: Infantry
+	HeroRevivalManager:
+		BaseRevivalCost: 500
+		CostPerLevel: 100
+		BaseRevivalTime: 1500
+		RevivalSound: herocomplete.aud
+		RevivalCompleteNotification: HeroRevived
+		RevivalCompleteTextNotification: Hero has been revived
+		ProductionType: Infantry
+	ProductionLimitMonitor:
+		MonitoredTypes: Infantry
+		LimitReachedNotification: HeroLimitReached
+		LimitReachedTextNotification: Maximum heroes reached

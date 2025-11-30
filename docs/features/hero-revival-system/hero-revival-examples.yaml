@@ -1,0 +1,284 @@
+# ============================================================================
+# HERO REVIVAL SYSTEM - YAML CONFIGURATION EXAMPLES
+# ============================================================================
+# This file contains example YAML configurations for the hero revival system
+# traits: HeroDeathHandler, HeroRevivalManager, and ProductionLimit
+#
+# Copy these configurations to your mod's rules/*.yaml files as needed.
+# ============================================================================
+
+# ============================================================================
+# EXAMPLE 1: Allied Hero with Death Handler
+# ============================================================================
+# Add this to your hero unit definition (e.g., tanya.yaml)
+# ============================================================================
+
+HTANYA:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Hero.Allied
+		Prerequisites: gahero
+		BuildPaletteOrder: 10
+		Description: Elite Allied Commando
+
+	# Hero identification
+	HeroInfo:
+		ShortName: Tanya
+		Title: Elite Commando
+		Description: A powerful hero unit specializing in infiltration and assassination.
+		Role: Assassin
+		Difficulty: Medium
+
+	# Hero death handler - prevents permanent death
+	HeroDeathHandler:
+		FallenNotification: HeroFallen
+		FallenTextNotification: Hero has fallen and can be revived at the Hero Altar!
+		FallenCondition: hero_fallen
+		AltarActorTypes: gahero
+
+	# Condition when hero is fallen (makes invisible/inactive)
+	GrantConditionOnTerrain@FALLEN:
+		RequiresCondition: hero_fallen
+
+	# Make hero invisible when fallen
+	WithSpriteBody:
+		RequiresCondition: !hero_fallen
+
+	# Disable movement when fallen
+	Mobile:
+		RequiresCondition: !hero_fallen
+
+	# 10-level veterancy system
+	GainsExperience:
+		UseExperienceLevelModifiers: true
+		ExperienceLevels: 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500
+
+	Health:
+		HP: 1000
+
+# ============================================================================
+# EXAMPLE 2: Hero Altar Building with Revival Manager
+# ============================================================================
+# Add this to your hero altar building definition
+# ============================================================================
+
+GAHERO:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: ~techlevel.infonly
+		Description: Allied Hero Altar\nTrains and revives Allied heroes.
+
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+
+	# Production capability for heroes
+	Production:
+		Produces: Hero.Allied
+
+	# Exit point for produced/revived heroes
+	Exit@1:
+		SpawnOffset: 0,512,0
+		ExitCell: 0,2
+		Facing: 128
+
+	# Hero revival manager
+	HeroRevivalManager:
+		BaseRevivalCost: 500
+		CostPerLevel: 100
+		BaseRevivalTime: 1500  # 60 seconds (25 ticks = 1 second)
+		RevivalSound: HeroRevivalStart
+		RevivalCompleteNotification: HeroRevived
+		RevivalCompleteTextNotification: Hero has been revived!
+		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: Not enough credits to revive hero!
+		ProductionType: Hero.Allied
+
+	# Production limit - max 3 heroes
+	ProductionLimit:
+		Type: Hero.Allied
+		Maximum: 3
+		LimitReachedNotification: ProductionLimitReached
+		LimitReachedTextNotification: Hero limit reached! Maximum 3 heroes allowed.
+		IncludeInProduction: true
+		IncludeFallenHeroes: true
+
+	# Production queue
+	ProductionQueue:
+		Type: Hero.Allied
+		Group: Hero
+		DisplayOrder: 50
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
+		QueuedAudio: Training
+
+	Health:
+		HP: 2000
+
+	Armor:
+		Type: Wood
+
+# ============================================================================
+# EXAMPLE 3: Soviet Hero Altar
+# ============================================================================
+
+NAHERO:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: ~techlevel.infonly
+		Description: Soviet Hero Altar\nTrains and revives Soviet heroes.
+
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+
+	Production:
+		Produces: Hero.Soviet
+
+	Exit@1:
+		SpawnOffset: 0,512,0
+		ExitCell: 0,2
+		Facing: 128
+
+	HeroRevivalManager:
+		BaseRevivalCost: 500
+		CostPerLevel: 100
+		BaseRevivalTime: 1500
+		RevivalSound: HeroRevivalStart
+		RevivalCompleteNotification: HeroRevived
+		RevivalCompleteTextNotification: Hero has been revived!
+		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: Not enough credits to revive hero!
+		ProductionType: Hero.Soviet
+
+	ProductionLimit:
+		Type: Hero.Soviet
+		Maximum: 3
+		LimitReachedNotification: ProductionLimitReached
+		LimitReachedTextNotification: Hero limit reached! Maximum 3 heroes allowed.
+		IncludeInProduction: true
+		IncludeFallenHeroes: true
+
+	ProductionQueue:
+		Type: Hero.Soviet
+		Group: Hero
+		DisplayOrder: 50
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
+		QueuedAudio: Training
+
+	Health:
+		HP: 2000
+
+	Armor:
+		Type: Wood
+
+# ============================================================================
+# EXAMPLE 4: Soviet Hero (Boris) with Death Handler
+# ============================================================================
+
+HBORIS:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Hero.Soviet
+		Prerequisites: nahero
+		BuildPaletteOrder: 10
+		Description: Soviet Hero - Air Strike Commander
+
+	HeroInfo:
+		ShortName: Boris
+		Title: Air Strike Commander
+		Description: Calls in devastating air strikes on enemy targets.
+		Role: Artillery
+		Difficulty: Medium
+
+	HeroDeathHandler:
+		FallenNotification: HeroFallen
+		FallenTextNotification: Hero has fallen and can be revived at the Hero Altar!
+		FallenCondition: hero_fallen
+		AltarActorTypes: nahero
+
+	# Invisible when fallen
+	WithSpriteBody:
+		RequiresCondition: !hero_fallen
+
+	Mobile:
+		RequiresCondition: !hero_fallen
+
+	GainsExperience:
+		UseExperienceLevelModifiers: true
+		ExperienceLevels: 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500
+
+	Health:
+		HP: 1200
+
+# ============================================================================
+# NOTIFICATIONS CONFIGURATION
+# ============================================================================
+# Add these to your mod's audio/notifications.yaml file
+# ============================================================================
+
+Notifications:
+	HeroFallen:
+		Sounds:
+			allied: herofallen-allied.aud
+			soviet: herofallen-soviet.aud
+
+	HeroRevived:
+		Sounds:
+			allied: herorevived-allied.aud
+			soviet: herorevived-soviet.aud
+
+	ProductionLimitReached:
+		Sounds:
+			allied: limitreached-allied.aud
+			soviet: limitreached-soviet.aud
+
+# ============================================================================
+# NOTES AND TIPS
+# ============================================================================
+#
+# 1. REVIVAL COST CALCULATION:
+#    Total Cost = BaseRevivalCost + (HeroLevel × CostPerLevel)
+#    Example: Level 5 hero = 500 + (5 × 100) = 1000 credits
+#
+# 2. REVIVAL TIME:
+#    BaseRevivalTime is in ticks (25 ticks = 1 second)
+#    1500 ticks = 60 seconds
+#
+# 3. FALLEN CONDITION:
+#    The "hero_fallen" condition should be used to:
+#    - Hide the hero sprite (WithSpriteBody: RequiresCondition: !hero_fallen)
+#    - Disable movement (Mobile: RequiresCondition: !hero_fallen)
+#    - Disable attacking (Armament: RequiresCondition: !hero_fallen)
+#
+# 4. PRODUCTION LIMIT:
+#    - Set Maximum to desired hero count (typically 3)
+#    - IncludeFallenHeroes: true counts fallen heroes toward limit
+#    - IncludeInProduction: true counts heroes being produced/revived
+#
+# 5. MULTIPLE ALTARS:
+#    - If player has multiple altars, any altar can revive any hero
+#    - Heroes are added to the first available altar's queue
+#
+# 6. ALTAR DESTRUCTION:
+#    - If altar is destroyed, heroes in revival queue are lost
+#    - Future enhancement: could transfer to another altar
+#
+# 7. TESTING CHECKLIST:
+#    [ ] Hero dies and becomes invisible
+#    [ ] Hero appears in altar's revival queue
+#    [ ] Revival cost is calculated correctly based on level
+#    [ ] Player can't revive without enough money
+#    [ ] Hero respawns at altar exit after revival time
+#    [ ] Hero is restored to full health
+#    [ ] Hero limit (3) is enforced correctly
+#    [ ] Fallen heroes count toward production limit
+#    [ ] Multiple heroes can be in revival queue
+#    [ ] Altar destruction clears revival queue
+#
+# ============================================================================

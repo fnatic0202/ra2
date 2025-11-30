@@ -128,6 +128,9 @@ Speech:
 		WeathercontrolDeviceDetected: 010
 		WeathercontrolDeviceOffline: 122
 		Win: 022
+		HeroFallen: 064
+		HeroRevived: 062
+		HeroLimitReached: 047
 
 Sounds:
 	DefaultVariant: .wav

@@ -516,13 +516,20 @@
 	# Heroes have priority selection
 	Selectable:
 		Priority: 100
-	# TODO: Hero death handler - enables revival system (disabled until C# traits are fixed)
-	# HeroDeathHandler:
-	#	FallenCondition: hero-fallen
-	#	FallenNotification: HeroFallen
-	#	FallenMessage: "{hero} has fallen!"
-	#	HideWhenFallen: true
-	#	TeleportOffMap: true
+	# Hero revival system
+	HeroDeathHandler:
+		FallenNotification: HeroFallen
+		FallenTextNotification: Hero has fallen!
+		FallenCondition: hero_fallen
+		AltarActorTypes: gahero, nahero
+	# Visual HERO badge
+	WithTextDecoration@HEROBADGE:
+		Text: HERO
+		Font: TinyBold
+		Color: FFD700
+		Position: Top
+		Margin: 0, 4
+		RequiresCondition: !hero_fallen
 	# TODO: Add HeroAbilitySlots for future skill system (4 slots: Q,W,E,R)
 	# TODO: Add HeroInventory for future item system (6 slots: 1-6)
 

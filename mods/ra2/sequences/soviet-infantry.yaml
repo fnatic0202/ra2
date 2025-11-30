@@ -188,3 +188,31 @@ yuripr:
 		Filename: yuripr.shp
 	icon:
 		Filename: yurpicon.shp
+
+# Hero Units - Using base unit graphics as placeholders
+hero_yuri:
+	Inherits: yuri
+
+hero_boris:
+	Inherits: ^ArmedInfantry
+	Inherits@MC: ^MindControllable
+	Defaults:
+		Filename: cons.shp
+	run:
+		Tick: 120
+	paradrop:
+		Start: 292
+	icon:
+		Filename: e2icon.shp
+
+hero_tesla:
+	Inherits: ^ArmedInfantry
+	Inherits@MC: ^MindControllable
+	Defaults:
+		Filename: shk.shp
+	run:
+		Tick: 120
+	paradrop:
+		Start: 292
+	icon:
+		Filename: shkicon.shp
