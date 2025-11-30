@@ -6,6 +6,10 @@
 
 ## 📚 文档索引
 
+### ⭐ 功能文档 | Features
+- **[功能列表 (FEATURES.md)](../FEATURES.md)** - 所有功能的版本化清单
+- **[英雄复活系统](features/hero-revival-system/README.md)** - Warcraft 3风格英雄系统 (v1.0.0)
+
 ### 开发文档 | Development
 - **[快速开始](development/quick-start.md)** - 5分钟快速上手指南
 - **[开发工作流](development/workflow.md)** - WSL + Windows 跨平台开发流程
@@ -44,6 +48,12 @@
 ```
 docs/
 ├── README.md                    # 本文件
+├── features/                    # 功能文档 (NEW!)
+│   └── hero-revival-system/    # 英雄复活系统
+│       ├── README.md           # 功能概览
+│       ├── CHANGELOG.md        # 版本历史
+│       ├── HERO_REVIVAL_*.md   # 技术文档
+│       └── *.yaml              # 配置示例
 ├── development/                 # 开发文档
 │   ├── quick-start.md          # 快速开始
 │   └── workflow.md             # 工作流程

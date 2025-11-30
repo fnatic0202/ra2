@@ -139,6 +139,11 @@ We welcome contributions! Please:
 
 ## 📖 Resources
 
+### Project Documentation
+- **[Feature List (FEATURES.md)](FEATURES.md)** - Complete feature list with versions
+- **[Documentation Center](docs/README.md)** - All project documentation
+
+### External Resources
 - **Official Wiki**: https://github.com/OpenRA/ra2/wiki
 - **OpenRA Website**: https://www.openra.net/
 - **OpenRA Documentation**: https://github.com/OpenRA/OpenRA/wiki
